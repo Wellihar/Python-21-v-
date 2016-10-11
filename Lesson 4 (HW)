@@ -5,7 +5,7 @@
 def delContact(contacts):
     d = int(input('Enter the number you want to delete: '))
     print('\nIn the position is:')
-    print(contacts[d]) # Понятия не имею как придать данной строке человеческий формат.
+    print(contacts[d])                                                  # Понятия не имею как придать данной строке человеческий формат.
     w = input('Are you sure you want to remove it?\nClick y - yes or n - no: ')
     if w == 'y':
         contacts.pop(d)
