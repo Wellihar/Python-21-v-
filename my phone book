@@ -1,0 +1,118 @@
+""""
+d = int(input('Какой элемент необходимо удалить: '))
+    print(a[d])
+    w = input('Вы действительно ходите удалить данный контакт? y - Да, n - Нет.')
+    if w == 'y':
+        a.pop(d)
+        print('Контакт удален!')
+    else:
+        print('Удаление отменено!')
+"""
+
+
+CHOISES = (
+    "Показать все контакты.",
+    "Найти контакт.",
+    "Добавить контакт.",
+    "Удалить контакт.",
+    "Выход."
+)
+
+
+LOOKUP = (
+    'id',
+    'firstName',
+    'lastName',
+    'phone',
+    'address'
+)
+
+
+FILE_NAME = 'contacts.db'
+
+
+
+def menu(choises):
+    for i in choises:
+        print(i[0], '-', i)
+
+
+def look_contact(lookup, contact):
+    contact = contact.split(':')
+    d = {x: y for(x, y) in zip(lookup, contact)}
+    return d
+
+
+def search_contact(search):
+    f = read_file()
+    L = []
+    for i in f:
+        if search in i:
+            L.append(i)
+    return L
+
+
+def read_file():
+    f = open(FILE_NAME)
+    a = f.readlines()
+    f.close()
+    return a
+
+
+def add_contact(contact):
+    f = open(FILE_NAME, 'a')
+    a = read_file()
+    id = len(a)
+    f.write(str(id)+':'+contact+'\n')
+    f.close()
+
+
+def show_contacts():
+    L = read_file()
+    for i in L:
+        a = look_contact(LOOKUP, i.rstrip('\n'))
+        print('ID: {}      Имя: {}      Фамилия: {}      Телефон: {}      Адресс: {}'.format(a['id'], a['firstName'], a['lastName'], a['phone'], a['address']))
+    print('\n')
+
+
+def del_contact(d):
+    a = read_file()
+    a.pop(d)
+    z = []
+    count = 0
+    for i in a:
+        L = i.split(':')
+        L[0] = str(count)
+        count += 1
+        z.append(':'.join(L))
+    save_lines(z)
+
+
+def save_lines(lines):
+    f = open(FILE_NAME, 'w')
+    for i in lines:
+        f.write(i)
+    f.close()
+
+
+
+
+while True:
+    menu(CHOISES)
+    choice = input('>>> ')
+
+    if choice == 'Д':
+        add_contact(input(''))
+    if choice == 'У':
+        del_contact()
+    if choice == 'П':
+        z = len(max(read_file())) + 59
+        print ('Показать все контакты:'.center(z))
+        show_contacts()
+    if choice == 'Н':
+        search_contact(input(''))
+    if choice == 'В':
+        print('Программа остановлена!')
+        break
+else:
+    print('Выберите из предложенных вариантов!\n')
